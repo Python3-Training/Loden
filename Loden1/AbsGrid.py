@@ -14,9 +14,18 @@ class aGrid(ABC):
         pass
      
     @abstractmethod
-    def pour(self, color):
+    def back(self, color):
         '''
         Update & distribute a default cell color
+        over the entire grid, preserving previous
+        contents, if any.
+        '''
+        pass
+
+    @abstractmethod
+    def fore(self, color):
+        '''
+        Update & distribute a default foreground color
         over the entire grid, preserving previous
         contents, if any.
         '''

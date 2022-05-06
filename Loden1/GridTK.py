@@ -50,10 +50,16 @@ class GridT(aGrid):
             a_wgt = self._cells[max_]
             return self._win.nametowidget(a_wgt)
 
-    def pour(self, color):
+    def back(self, color):
         for cell in self._cells:
             a_wgt = self._win.nametowidget(cell)
             a_wgt.config(bg=color)
+        self._color_back = color    
+
+    def fore(self, color):
+        for cell in self._cells:
+            a_wgt = self._win.nametowidget(cell)
+            a_wgt.config(fg=color)
         self._color_fore = color    
 
     def set_color(self, cellx, celly, color) -> bool:
@@ -65,7 +71,7 @@ class GridT(aGrid):
 
     def cls(self, color=None):
         if not color:
-            color = self._color_fore
+            color = self._color_back
         for cell in self._cells:
             a_wgt = self._win.nametowidget(cell)
             a_wgt['text'] = ' '
