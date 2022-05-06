@@ -16,8 +16,9 @@ class aGrid(ABC):
     @abstractmethod
     def pour(self, color):
         '''
-        Update & distribute a default cell color,
-        preserving previous text, if any.
+        Update & distribute a default cell color
+        over the entire grid, preserving previous
+        contents, if any.
         '''
         pass
 
@@ -25,7 +26,7 @@ class aGrid(ABC):
     def set_color(self, cellx, celly, color) -> bool:
         '''
         Set the color of the 0's based cell location.
-        Colors to be a string color values as per Tkinter.
+        Colors to be a stringified color as per Tkinter.
         '''
         pass
      

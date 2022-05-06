@@ -7,13 +7,13 @@ from tkinter import font
 class GridT(aGrid):
 
     def __init__(self, cells_wide, cells_high, cell_wide, cell_high, font_size=16):
-        self.color_fore = '#00ff00'
-        self.color_back = '#0000ff'
-        self.color_border = '#000000'
-        self.cells_wide = cells_wide
-        self.cells_high = cells_high
-        self.cell_wide = cell_wide
-        self.cell_high = cell_high
+        self._color_back = '#00ff00'
+        self._color_fore = '#0000ff'
+        self._color_border = '#000000'
+        self._cells_wide = cells_wide
+        self._cells_high = cells_high
+        self._cell_wide = cell_wide
+        self._cell_high = cell_high
         self._win = None
         self._cells = []
         self._fntsize = font_size
@@ -26,16 +26,17 @@ class GridT(aGrid):
         zfont = font.nametofont('TkFixedFont')
         zfont.configure(size=self._fntsize)
         self._win.geometry(f"+{50}+{50}")
-        self._win['bg'] =self.color_back
+        self._win['bg'] =self._color_border
         self._win['borderwidth'] = 2 # margin nsew
-        for yhigh in range(self.cells_high):
-            for xwide in range(self.cells_wide):
+        for yhigh in range(self._cells_high):
+            for xwide in range(self._cells_wide):
                 a_wgt = tk.Button(
                     zpane,
                     font=zfont,
-                    bg=self.color_fore,
-                    width=self.cell_wide,
-                    height=self.cell_high,
+                    bg=self._color_back,
+                    fg=self._color_fore,
+                    width=self._cell_wide, # font
+                    height=self._cell_high,# font
                     relief=tk.SOLID
                     )
                 a_wgt.grid(row=xwide,column=yhigh)
@@ -44,23 +45,16 @@ class GridT(aGrid):
         self.zpane = zpane
 
     def get_cell(self, xloc, yloc):
-        max_ = xloc * self.cells_wide + yloc
+        max_ = xloc * self._cells_wide + yloc
         if len(self._cells) > max_:
             a_wgt = self._cells[max_]
             return self._win.nametowidget(a_wgt)
-
-    @staticmethod
-    def Create(cells_wide, cells_high, cell_wide, cell_high):
-        result = GridT(cells_wide, cells_high,
-                       cell_wide, cell_high)
-        result._init_win()
-        return result
 
     def pour(self, color):
         for cell in self._cells:
             a_wgt = self._win.nametowidget(cell)
             a_wgt.config(bg=color)
-        self.color_fore = color    
+        self._color_fore = color    
 
     def set_color(self, cellx, celly, color) -> bool:
         a_wgt = self.get_cell(cellx, celly)
@@ -71,7 +65,7 @@ class GridT(aGrid):
 
     def cls(self, color=None):
         if not color:
-            color = self.color_fore
+            color = self._color_fore
         for cell in self._cells:
             a_wgt = self._win.nametowidget(cell)
             a_wgt['text'] = ' '
@@ -92,6 +86,13 @@ class GridT(aGrid):
                 pass
             finally:
                 self._win = None
+
+    @staticmethod
+    def Create(cells_wide, cells_high, cell_wide, cell_high):
+        result = GridT(cells_wide, cells_high,
+                       cell_wide, cell_high)
+        result._init_win()
+        return result
 
 
 if __name__ == '__main__':
