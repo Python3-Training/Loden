@@ -20,7 +20,8 @@ class GridT(aGrid):
     
     def _init_win(self):
         self.close()
-        self._win = tk.Tk(className='OdenT')
+        self._win = tk.Tk()
+        self._win.title("Loden")
         zpane = tk.Frame(self._win)
         zfont = font.nametofont('TkFixedFont')
         zfont.configure(size=self._fntsize)
@@ -55,6 +56,12 @@ class GridT(aGrid):
         result._init_win()
         return result
 
+    def pour(self, color):
+        for cell in self._cells:
+            a_wgt = self._win.nametowidget(cell)
+            a_wgt.config(bg=color)
+        self.color_fore = color    
+
     def set_color(self, cellx, celly, color) -> bool:
         a_wgt = self.get_cell(cellx, celly)
         if a_wgt:
@@ -64,7 +71,7 @@ class GridT(aGrid):
 
     def cls(self, color=None):
         if not color:
-            color = 'white'
+            color = self.color_fore
         for cell in self._cells:
             a_wgt = self._win.nametowidget(cell)
             a_wgt['text'] = ' '
