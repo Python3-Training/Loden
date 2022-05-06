@@ -17,6 +17,7 @@ class GridT(aGrid):
         self._win = None
         self._cells = []
         self._fntsize = font_size
+        self._time_lapse = 1000 # milisecond default
     
     def _init_win(self):
         self.close()
@@ -25,6 +26,7 @@ class GridT(aGrid):
         zpane = tk.Frame(self._win)
         zfont = font.nametofont('TkFixedFont')
         zfont.configure(size=self._fntsize)
+        zfont.configure(weight=font.BOLD)
         self._win.geometry(f"+{50}+{50}")
         self._win['bg'] =self._color_border
         self._win['borderwidth'] = 2 # margin nsew
@@ -43,6 +45,29 @@ class GridT(aGrid):
                 self._cells.append(a_wgt)
         zpane.pack(expand=True)
         self.zpane = zpane
+
+    def ticker(self, mili_sec=None):
+        if not mili_sec:
+            mili_sec = self._time_lapse
+        self.zpane.after(mili_sec, self.tick)
+        self._time_lapse = mili_sec
+
+
+    def tick(self):
+        import random
+        r = hex(random.randrange(0, 255))[2:]
+        g = hex(random.randrange(0, 255))[2:]
+        b = hex(random.randrange(0, 255))[2:]
+        acolor = f'#{r:<02}{g:<02}{b:<02}'
+        x = random.randrange(0, self._cells_wide)
+        y = random.randrange(0, self._cells_high)
+        if random.randrange(0, 100) % 25 == 0:
+            self.cls(acolor)
+        else:
+            face = random.randrange(0x1f600, 0x1f619)
+            self.set_char(x, y, chr(face))
+            self.set_color(x, y, acolor)
+        self.ticker()
 
     def get_cell(self, xloc, yloc):
         max_ = xloc * self._cells_wide + yloc
@@ -107,4 +132,5 @@ if __name__ == '__main__':
     w.set_char(0, 0, '#')
     w.set_color(4, 4, '#ee00ee')
     w.set_char(4, 4, '!')
+    w.ticker(250)
 
