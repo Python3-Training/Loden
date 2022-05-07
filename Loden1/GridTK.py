@@ -88,7 +88,7 @@ class GridT(aGrid):
         Handy way to get the representational widget.
         Returns None if none found.
         '''
-        max_ = xloc * self._cells_wide + yloc
+        max_ = (yloc * self._cells_wide) + xloc
         if len(self._cells) > max_:
             a_wgt = self._cells[max_]
             return self._win.nametowidget(a_wgt)
