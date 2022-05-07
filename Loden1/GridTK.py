@@ -1,10 +1,14 @@
 #!/usr/bin/env python3
 '''
-A Tkinter realization for the grid abstration.
+Mission: Provide a Tkinter implementation suitable
+for paradigm testing, demonstration, as well as re-use.
 
-Whimsical demonstration "makes faces, in time."
+Note: This particular demonstration also features a
+time-based callback operation, so the whimsical __main__
+herein can (ahem) "make faces, in time."
 
 '''
+
 from AbsGrid import aGrid
 import tkinter as tk
 from tkinter import font
@@ -52,46 +56,16 @@ class GridT(aGrid):
         zpane.pack(expand=True)
         self.zpane = zpane
 
-    def ticker(self, mili_sec=None):
+    @staticmethod
+    def Create(cells_wide, cells_high, cell_wide, cell_high):
+        '''Factory. 
+        Regions to be based upon cells, never pixels.
+        Font width is number of characters each cell can hold.
         '''
-        Beschedule the very NEXT callback to .tick()
-        '''
-        if not mili_sec:
-            mili_sec = self._time_lapse
-        self.zpane.after(mili_sec, self.tick)
-        self._time_lapse = mili_sec
-        self._times += 1
-
-    def tick(self):
-        '''
-        To activate one must first call .ticker().
-        One must also re-sechedule using the same,
-        as demonstrated herein.
-        '''
-        import random
-        r = hex(random.randrange(0, 255))[2:]
-        g = hex(random.randrange(0, 255))[2:]
-        b = hex(random.randrange(0, 255))[2:]
-        acolor = f'#{r:<02}{g:<02}{b:<02}'
-        x = random.randrange(0, self._cells_wide)
-        y = random.randrange(0, self._cells_high)
-        if self._times % (len(self._cells)/2) == 0:
-            self.cls(acolor)
-        else:
-            face = random.randrange(0x1f600, 0x1f619)
-            self.set_char(x, y, chr(face))
-            self.set_color(x, y, acolor)
-        self.ticker()
-
-    def get_cell(self, xloc, yloc):
-        '''
-        Handy way to get the representational widget.
-        Returns None if none found.
-        '''
-        max_ = (yloc * self._cells_wide) + xloc
-        if len(self._cells) > max_:
-            a_wgt = self._cells[max_]
-            return self._win.nametowidget(a_wgt)
+        result = GridT(cells_wide, cells_high,
+                       cell_wide, cell_high)
+        result._init_win()
+        return result
 
     def back(self, color):
         '''
@@ -162,16 +136,46 @@ class GridT(aGrid):
             finally:
                 self._win = None
 
-    @staticmethod
-    def Create(cells_wide, cells_high, cell_wide, cell_high):
-        '''Factory. 
-        Regions to be based upon cells, never pixels.
-        Font width is number of characters each cell can hold.
+    def ticker(self, mili_sec=None):
         '''
-        result = GridT(cells_wide, cells_high,
-                       cell_wide, cell_high)
-        result._init_win()
-        return result
+        Beschedule the very NEXT callback to .tick()
+        '''
+        if not mili_sec:
+            mili_sec = self._time_lapse
+        self.zpane.after(mili_sec, self.tick)
+        self._time_lapse = mili_sec
+        self._times += 1
+
+    def tick(self):
+        '''
+        To activate one must first call .ticker().
+        One must also re-sechedule using the same,
+        as demonstrated herein.
+        '''
+        import random
+        r = hex(random.randrange(0, 255))[2:]
+        g = hex(random.randrange(0, 255))[2:]
+        b = hex(random.randrange(0, 255))[2:]
+        acolor = f'#{r:<02}{g:<02}{b:<02}'
+        x = random.randrange(0, self._cells_wide)
+        y = random.randrange(0, self._cells_high)
+        if self._times % (len(self._cells)/2) == 0:
+            self.cls(acolor)
+        else:
+            face = random.randrange(0x1f600, 0x1f619)
+            self.set_char(x, y, chr(face))
+            self.set_color(x, y, acolor)
+        self.ticker()
+
+    def get_cell(self, xloc, yloc):
+        '''
+        Handy way to get the representational widget.
+        Returns None if none found.
+        '''
+        max_ = (yloc * self._cells_wide) + xloc
+        if len(self._cells) > max_:
+            a_wgt = self._cells[max_]
+            return self._win.nametowidget(a_wgt)
 
 
 if __name__ == '__main__':
