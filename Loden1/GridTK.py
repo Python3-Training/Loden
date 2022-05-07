@@ -67,6 +67,17 @@ class GridT(aGrid):
         result._init_win()
         return result
 
+    @staticmethod
+    def Create(cells_wide, cells_high, cell_wide, cell_high, font):
+        '''Factory. 
+        Regions to be based upon cells, never pixels.
+        Font width is number of characters each cell can hold.
+        '''
+        result = GridT(cells_wide, cells_high,
+                       cell_wide, cell_high, font)
+        result._init_win()
+        return result
+    
     def back(self, color):
         '''
         Update & distribute a default cell color
@@ -179,7 +190,7 @@ class GridT(aGrid):
 
 
 if __name__ == '__main__':
-    w = GridT.Create(20,10,3,1)
+    w = GridT.Create(20,10,3,1,font=28)
     w.set_color(0, 0, 'red')
     w.set_char(0, 0, '#')
     w.set_color(4, 4, '#ee00ee')
