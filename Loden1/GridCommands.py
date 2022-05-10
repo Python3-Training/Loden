@@ -5,13 +5,13 @@ __all__ = ["CmdHelp","CmdValues","CmdOpen","CmdClose",
            "CmdEvents","CmdEvent",]
 
 from AbsGrid import aGrid
-from AbsCommand import Command, NoCommand, BadParam
+from AbsCommand import aCommand, NoCommand, BadParam
 
 
 class Validate:
     @staticmethod
     def validate(a_cmd, a_grid, full_command):
-        if not isinstance(a_cmd, Command):
+        if not isinstance(a_cmd, aCommand):
             raise NoCommand("Error: AbsCommand child required.")
         Validate.check_prefix(a_cmd.key, full_command)
         Validate.check_instance(a_grid)
@@ -32,7 +32,7 @@ class Validate:
             raise NoCommand("Error: Command mismatch.")
 
 
-class CmdHelp(Command):
+class CmdHelp(aCommand):
     def __init__(self, key):
         self.key = key
     
@@ -40,7 +40,7 @@ class CmdHelp(Command):
         Validate.validate(self, a_grid, full_command)
         return self.key    
 
-class CmdValues(Command):
+class CmdValues(aCommand):
     def __init__(self, key):
         self.key = key
     
@@ -48,7 +48,7 @@ class CmdValues(Command):
         Validate.validate(self, a_grid, full_command)
         return self.key    
 
-class CmdOpen(Command):
+class CmdOpen(aCommand):
     def __init__(self, key):
         self.key = key
     
@@ -56,7 +56,7 @@ class CmdOpen(Command):
         Validate.validate(self, a_grid, full_command)
         return self.key    
 
-class CmdClose(Command):
+class CmdClose(aCommand):
     def __init__(self, key):
         self.key = key
     
@@ -64,7 +64,7 @@ class CmdClose(Command):
         Validate.validate(self, a_grid, full_command)
         return self.key    
 
-class CmdEvents(Command):
+class CmdEvents(aCommand):
     def __init__(self, key):
         self.key = key
     
@@ -72,7 +72,7 @@ class CmdEvents(Command):
         Validate.validate(self, a_grid, full_command)
         return self.key    
 
-class CmdEvent(Command):
+class CmdEvent(aCommand):
     def __init__(self, key):
         self.key = key
     

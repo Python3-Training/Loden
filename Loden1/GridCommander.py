@@ -1,12 +1,15 @@
 #!/usr/bin/env python3
 # Mission: Create a command-line interface (CLI)
 
+from AbsGrid import GridParams
 from GridTK import GridT
 from GridGrammer import Grmr01
 from AbsCommand import NoCommand, BadParam
 
 app = Grmr01()
-a_grid = GridT(10, 8, 3, 3)
+params = GridParams(10,8)
+params.font_high = params.font_wide = 3
+a_grid = GridT(params)
 while(True):
     try:
         cmd = input(": ")

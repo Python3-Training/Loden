@@ -9,23 +9,16 @@ herein can (ahem) "make faces, in time."
 
 '''
 
-from AbsGrid import aGrid
+from AbsGrid import aGrid, GridParams
 import tkinter as tk
 from tkinter import font
 
 class GridT(aGrid):
 
-    def __init__(self, cells_wide, cells_high, cell_wide, cell_high, font_size=16):
-        self._color_back = '#00ff00'
-        self._color_fore = '#0000ff'
-        self._color_border = '#000000'
-        self._cells_wide = cells_wide
-        self._cells_high = cells_high
-        self._cell_wide = cell_wide
-        self._cell_high = cell_high
+    def __init__(self, params=GridParams()):
+        super().__init__(params)
         self._win = None
         self._cells = []
-        self._fntsize = font_size
         self._time_lapse = 1000 # milisecond default
         self._times = 0
     
@@ -35,20 +28,20 @@ class GridT(aGrid):
         self._win.title("Loden")
         zpane = tk.Frame(self._win)
         zfont = font.nametofont('TkFixedFont')
-        zfont.configure(size=self._fntsize)
+        zfont.configure(size=self.params.font_size)
         zfont.configure(weight=font.BOLD)
         self._win.geometry(f"+{50}+{50}")
-        self._win['bg'] =self._color_border
+        self._win['bg'] =self.params.color_border
         self._win['borderwidth'] = 2 # margin nsew
-        for yhigh in range(self._cells_wide):
-            for xwide in range(self._cells_high):
+        for yhigh in range(self.params.cells_wide):
+            for xwide in range(self.params.cells_high):
                 a_wgt = tk.Button(
                     zpane,
                     font=zfont,
-                    bg=self._color_back,
-                    fg=self._color_fore,
-                    width=self._cell_wide, # font
-                    height=self._cell_high,# font
+                    bg=self.params.color_back,
+                    fg=self.params.color_fore,
+                    width=self.params.font_wide,
+                    height=self.params.font_high,
                     relief=tk.SOLID
                     )
                 a_wgt.grid(row=xwide,column=yhigh)
@@ -57,24 +50,9 @@ class GridT(aGrid):
         self.zpane = zpane
 
     @staticmethod
-    def Create(cells_wide, cells_high, cell_wide, cell_high):
-        '''Factory. 
-        Regions to be based upon cells, never pixels.
-        Font width is number of characters each cell can hold.
-        '''
-        result = GridT(cells_wide, cells_high,
-                       cell_wide, cell_high)
-        result._init_win()
-        return result
-
-    @staticmethod
-    def Create(cells_wide, cells_high, cell_wide, cell_high, font):
-        '''Factory. 
-        Regions to be based upon cells, never pixels.
-        Font width is number of characters each cell can hold.
-        '''
-        result = GridT(cells_wide, cells_high,
-                       cell_wide, cell_high, font)
+    def Create(params):
+        ''' Factory - requesite '''
+        result = GridT(params)
         result._init_win()
         return result
     
@@ -168,8 +146,8 @@ class GridT(aGrid):
         g = hex(random.randrange(0, 255))[2:]
         b = hex(random.randrange(0, 255))[2:]
         acolor = f'#{r:<02}{g:<02}{b:<02}'
-        x = random.randrange(0, self._cells_wide)
-        y = random.randrange(0, self._cells_high)
+        x = random.randrange(0, self.params.cells_wide)
+        y = random.randrange(0, self.params.cells_high)
         if self._times % (len(self._cells)/2) == 0:
             self.cls(acolor)
         else:
@@ -183,14 +161,18 @@ class GridT(aGrid):
         Handy way to get the representational widget.
         Returns None if none found.
         '''
-        max_ = (yloc * self._cells_wide) + xloc
+        max_ = (yloc * self.params.cells_wide) + xloc
         if len(self._cells) > max_:
             a_wgt = self._cells[max_]
             return self._win.nametowidget(a_wgt)
 
 
 if __name__ == '__main__':
-    w = GridT.Create(20,10,3,1,font=28)
+    params = GridParams(20,10)
+    params.font_wide = 3
+    params.font_high = 1
+    params.font_size = 28
+    w = GridT.Create(params)
     w.set_color(0, 0, 'red')
     w.set_char(0, 0, '#')
     w.set_color(4, 4, '#ee00ee')

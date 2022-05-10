@@ -2,11 +2,47 @@
 
 from abc import ABC, abstractmethod
 
+class GridParams:
+
+    def __init__(self,
+                 cells_wide=10,cells_high=5,
+                 color_back='#00ff00',color_fore='#0000ff',color_border='#000000',
+                 font_wide=1,font_high=1, font_size=16):
+        self.cells_wide   = cells_wide
+        self.cells_high   = cells_high
+        self.font_wide    = font_wide
+        self.font_high    = font_high
+        self.color_back   = color_back
+        self.color_fore   = color_fore
+        self.color_border = color_border
+        self.font_size    = font_size
+       
+    def assign(self, params)->bool:
+        if not params:
+            return False
+        self.color_back    = params.color_back
+        self.color_fore    = params.color_fore
+        self.color_border  = params.color_border
+        self.cells_wide    = params.cells_wide
+        self.cells_high    = params.cells_high
+        self.font_wide     = params.font_wide
+        self.font_wide     = params.font_wide
+        self.font_size     = params.font_size
+        return True
+        
+
 class aGrid(ABC):
+
+    def __init__(self, params):
+        self.params = GridParams()
+        self.assign(params)
+    
+    def assign(self, params):
+        self.params.assign(params)
 
     @staticmethod
     @abstractmethod
-    def Create(cells_wide, cells_high, font_wide, font_high):
+    def Create(params=GridParams()):
         '''Factory. 
         Regions to be based upon cells, never pixels.
         Font width is number of characters each cell can hold.

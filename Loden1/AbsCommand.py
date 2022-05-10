@@ -11,7 +11,7 @@ class NoCommand(Exception):
     def __init__(self, message):
         super().__init__(message)
 
-class Command(ABC):
+class aCommand(ABC):
     '''Our basic command definition. '''
     @abstractmethod
     def execute(self, a_grid, full_command) -> str():
