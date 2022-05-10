@@ -10,23 +10,23 @@ class GridParams:
                  font_wide=1,font_high=1, font_size=16):
         self.cells_wide   = cells_wide
         self.cells_high   = cells_high
-        self.font_wide    = font_wide
-        self.font_high    = font_high
         self.color_back   = color_back
         self.color_fore   = color_fore
         self.color_border = color_border
+        self.font_wide    = font_wide
+        self.font_high    = font_high
         self.font_size    = font_size
        
     def assign(self, params)->bool:
         if not params:
             return False
+        self.cells_wide    = params.cells_wide
+        self.cells_high    = params.cells_high
         self.color_back    = params.color_back
         self.color_fore    = params.color_fore
         self.color_border  = params.color_border
-        self.cells_wide    = params.cells_wide
-        self.cells_high    = params.cells_high
         self.font_wide     = params.font_wide
-        self.font_wide     = params.font_wide
+        self.font_high     = params.font_high
         self.font_size     = params.font_size
         return True
         
