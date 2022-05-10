@@ -65,7 +65,7 @@ class GridT(aGrid):
         for cell in self._cells:
             a_wgt = self._win.nametowidget(cell)
             a_wgt.config(bg=color)
-        self._color_back = color    
+        self.params.color_back = color    
 
     def fore(self, color):
         '''
@@ -76,7 +76,7 @@ class GridT(aGrid):
         for cell in self._cells:
             a_wgt = self._win.nametowidget(cell)
             a_wgt.config(fg=color)
-        self._color_fore = color    
+        self.params.color_fore = color    
 
     def set_color(self, cellx, celly, color) -> bool:
         '''
@@ -96,7 +96,7 @@ class GridT(aGrid):
         Default color to be platform defined.
         '''
         if not color:
-            color = self._color_back
+            color = self.params.color_back
         for cell in self._cells:
             a_wgt = self._win.nametowidget(cell)
             a_wgt['text'] = ' '
