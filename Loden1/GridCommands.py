@@ -7,12 +7,20 @@ __all__ = ["CmdHelp","CmdValues","CmdOpen","CmdClose",
 from AbsGrid import aGrid
 from AbsCommand import aCommand, NoCommand, BadParam
 
+class Command(aCommand):
+    def __init__(self, key):
+        self.key = key
+    
+    def execute(self, a_grid, full_command) -> str():
+        Validate.validate(self, a_grid, full_command)
+        return self.key 
+
 
 class Validate:
     @staticmethod
     def validate(a_cmd, a_grid, full_command):
-        if not isinstance(a_cmd, aCommand):
-            raise NoCommand("Error: AbsCommand child required.")
+        if not isinstance(a_cmd, Command):
+            raise NoCommand("Error: Command child required.")
         Validate.check_prefix(a_cmd.key, full_command)
         Validate.check_instance(a_grid)
     
@@ -32,51 +40,45 @@ class Validate:
             raise NoCommand("Error: Command mismatch.")
 
 
-class CmdHelp(aCommand):
+class CmdHelp(Command):
     def __init__(self, key):
-        self.key = key
+        super().__init__(key)
     
     def execute(self, a_grid, full_command) -> str():
-        Validate.validate(self, a_grid, full_command)
-        return self.key    
+        return super().execute(a_grid, full_command)   
 
-class CmdValues(aCommand):
+class CmdValues(Command):
     def __init__(self, key):
-        self.key = key
+        super().__init__(key)
     
     def execute(self, a_grid, full_command) -> str():
-        Validate.validate(self, a_grid, full_command)
-        return self.key    
+        return super().execute(a_grid, full_command)    
 
-class CmdOpen(aCommand):
+class CmdOpen(Command):
     def __init__(self, key):
-        self.key = key
+        super().__init__(key)
     
     def execute(self, a_grid, full_command) -> str():
-        Validate.validate(self, a_grid, full_command)
-        return self.key    
+        return super().execute(a_grid, full_command)    
 
-class CmdClose(aCommand):
+class CmdClose(Command):
     def __init__(self, key):
-        self.key = key
+        super().__init__(key)
     
     def execute(self, a_grid, full_command) -> str():
-        Validate.validate(self, a_grid, full_command)
-        return self.key    
+        return super().execute(a_grid, full_command)    
 
-class CmdEvents(aCommand):
+class CmdEvents(Command):
     def __init__(self, key):
-        self.key = key
+        super().__init__(key)
     
     def execute(self, a_grid, full_command) -> str():
-        Validate.validate(self, a_grid, full_command)
-        return self.key    
-
-class CmdEvent(aCommand):
+        return super().execute(a_grid, full_command)
+    
+class CmdEvent(Command):
     def __init__(self, key):
-        self.key = key
+        super().__init__(key)
     
     def execute(self, a_grid, full_command) -> str():
-        Validate.validate(self, a_grid, full_command)
-        return self.key
+        return super().execute(a_grid, full_command)
 
